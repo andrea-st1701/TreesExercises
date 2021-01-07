@@ -11,7 +11,6 @@ class tree
 {
 	private:
 		node* root;
-		int* ord; 
 		int count;
 	public:
 		tree();
@@ -32,41 +31,6 @@ void tree::InOrder(node* p)
 	if(p)
 	{
 		InOrder(p->left);
-		/*if(count==0)
-		{
-			ord[0]=p->cont;
-			count++;
-			
-		}
-		else
-		{
-			ord = (int*) realloc(ord, (count+1)*sizeof(int));
-			for(int i=0; i<count; i++)
-			{
-				cout<<ord[i]<<" ";
-			}
-			cout<<"\n";
-			if(!ord)
-			{
-				cout<<"ERROR";
-			}
-			count++;
-			for(int i=0; i<count; i++)
-			{
-				if(ord[i]>p->cont)
-				{
-					
-						shiftRight(i-1, this);
-						ord[i]=p->cont;
-						break;
-					
-				}
-				else if(i==count-1)
-				{
-					ord[i]=p->cont;
-				}
-			}
-		}*/
 		cout<<p->cont<<" ";
 		InOrder(p->right);
 		
@@ -151,10 +115,6 @@ void tree::addNode()
 	}while(a=='a');
 	cout<<"\nOrdering...\n\n";
 	InOrder(root);
-	for(int i=0; i<count; i++)
-	{
-		cout<<ord[i]<<" ";
-	}
 }
 int main()
 {
