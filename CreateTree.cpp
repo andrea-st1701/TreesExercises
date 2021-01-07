@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <stdlib.h>
 using namespace std;
 struct node
 {
@@ -153,51 +154,83 @@ void tree::addNode()
 		}
 		Pot(root);
 	}
-void compareNode(bool &eq, node *n0, node *n1)
+bool compareNode( node *n0, node *n1)
 {
-
+	bool eq=1;
 	if(!n0||!n1)
 	{
-		return;
+		if(!n0&&!n1)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 	cout<<endl<<n0->cont<<" "<<n1->cont<<endl;
 	if(n0->cont!=n1->cont)
 	{
 		eq=0;
-		return;
+		return eq;
 	}
 	if(eq)
 	{
-		compareNode(eq, n0->left, n1->left);
-		compareNode(eq, n0->right, n1->right);
+		eq=compareNode( n0->left, n1->left);
+		eq=compareNode( n0->right, n1->right);
 	}
-	return ;
+	return eq;
 }
-bool compareTree(tree t0, tree t1)
+bool compareTree(tree* t0, tree* t1)
 {
 	node* p;
 	node* t;
 	bool eq= true;
 	p=new node;
 	t=new node;
-	p=t0.getRoot();
-	t=t1.getRoot();
-	compareNode(eq, p, t);
+	p=t0->getRoot();
+	t=t1->getRoot();
+	eq=compareNode( p, t);
 	return eq;
 }
 
 int main()
 {
 	bool eq;
-	tree trees[2];
-	cout<<"\nTree 1\n";
-	trees[0].addRoot();
-	trees[0].addNode();
-	cout<<"\nTree 2\n";
-	trees[1].addRoot();
-	trees[1].addNode();
+	char f;
+	int  n=0;
+	tree** Trees;
+	Trees=(tree**)malloc (1);
+	if (!Trees) exit (1);
+	Trees[0]=new tree;
+	do 
+	{
+		cout<<"\nTree "<<n+1<<endl;
+		Trees[n]->addRoot();
+		Trees[n]->addNode();
+		do
+		{
+			cout<<"\ndo you want to add another tree(a), or compare two trees (c)\n";
+			cin>>f;
+		}while(f!='a'&&f!='c');
+		if(f=='a')
+		{
+			n++;
+			Trees=(tree**)realloc(Trees, (n+1)*sizeof(tree*));
+			if(!Trees) exit(1);
+			Trees[n]=new tree;
+		}
+	}while(f=='a');
+	int comp1, comp2;
+	do
+	{
+		cout<<"\nwhich trees do you want to compare?\n";
+		cin>>comp1>>comp2;
+	}while(!Trees[comp1-1]||!Trees[comp2-1]);
+	
+	
 	cout<<"\ncomparing trees...\n";
-	eq=compareTree(trees[0], trees[1]);
+	eq=compareTree(Trees[comp1-1], Trees[comp2-1]);
 	if(eq)
 	{
 		cout<<"the selected trees are equal";

@@ -32,7 +32,7 @@ void tree::InOrder(node* p)
 	if(p)
 	{
 		InOrder(p->left);
-		if(count==0)
+		/*if(count==0)
 		{
 			ord[0]=p->cont;
 			count++;
@@ -66,7 +66,8 @@ void tree::InOrder(node* p)
 					ord[i]=p->cont;
 				}
 			}
-		}
+		}*/
+		cout<<p->cont<<" ";
 		InOrder(p->right);
 		
 	}
@@ -98,6 +99,7 @@ void tree::addNode()
 		 }
 		else
 		{
+			p=root;
 			if(c>=p->cont)
 			{
 				if(!p->right)
@@ -154,10 +156,8 @@ void tree::addNode()
 		cout<<ord[i]<<" ";
 	}
 }
-
 int main()
 {
 	tree a;
 	a.addNode();
-	
 }
