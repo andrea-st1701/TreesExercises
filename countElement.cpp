@@ -16,9 +16,11 @@ class tree
 	public:
 		string add;
 		tree();
+		void addRoot();
 		void addNode();
 		node* getRoot();
 		void Pot(node* p);
+		int count(char el, node* p, int &z);
 };
 
 tree::tree()
@@ -39,18 +41,20 @@ void tree::Pot(node* p)
 		Pot(p->right);
 	}
 }
-
+void tree::addRoot()
+{
+	char c;
+	
+		cout<<"insert value for root\n";
+		cin>>c;
+		root= new node;
+		root->cont=c;	
+	
+}
 void tree::addNode()
 {
 	char c, b;
 	bool end=false;
-	if(!root)
-	{	
-		cout<<"insert value for root\n";
-		cin>>c;
-		root= new node;
-		root->cont=c;
-	}
 	node* p=root;
 	while(!end)
 	{
@@ -150,83 +154,30 @@ void tree::addNode()
 			}
 		}
 		Pot(root);
-	}
-bool compareNode( node *n0, node *n1)
-{
-	bool eq=1;
-	if(eq&&n0&&n1)
+}
+int tree::count(char el, node* p, int &z)
+{	
+	if(p!=NULL)
 	{
-		
-		eq=compareNode( n0->left, n1->left);
-		if(eq) eq=compareNode( n0->right, n1->right);
-		
-		cout<<endl<<n0->cont<<" "<<n1->cont<<endl;
-		if(n0->cont!=n1->cont)
+		z=count(el ,p->left, z);
+		z=count(el ,p->right, z);
+		if(el==p->cont)
 		{
-			return 0;
+			z+1;
 		}
-	}	
-	else if(!n0^!n1)
-	{
-		return 0;
+		
 	}
-	return eq;
+	return z;
 }
-bool compareTree(tree* t0, tree* t1)
-{
-	node* p;
-	node* t;
-	bool eq= true;
-	p=new node;
-	t=new node;
-	p=t0->getRoot();
-	t=t1->getRoot();
-	eq=compareNode( p, t);
-	return eq;
-}
-
 int main()
 {
-	bool eq;
-	char f;
-	int  n=0;
-	tree** Trees;
-	Trees=(tree**)malloc (1);
-	if (!Trees) exit (1);
-	Trees[0]=new tree;
-	do 
-	{
-		cout<<"\nTree "<<n+1<<endl;
-		Trees[n]->addNode();
-		do
-		{
-			cout<<"\ndo you want to add another tree(a), or compare two trees (c)\n";
-			cin>>f;
-		}while(f!='a'&&f!='c');
-		if(f=='a')
-		{
-			n++;
-			Trees=(tree**)realloc(Trees, (n+1)*sizeof(tree*));
-			if(!Trees) exit(1);
-			Trees[n]=new tree;
-		}
-	}while(f=='a');
-	int comp1, comp2;
-	do
-	{
-		cout<<"\nwhich trees do you want to compare?\n";
-		cin>>comp1>>comp2;
-	}while(!Trees[comp1-1]||!Trees[comp2-1]);
-	
-	
-	cout<<"\ncomparing trees...\n";
-	eq=compareTree(Trees[comp1-1], Trees[comp2-1]);
-	if(eq)
-	{
-		cout<<"the selected trees are equal";
-	}
-	else
-	{
-		cout<<"the selected trees are NOT equal";
-	}	
+	tree a;
+	char el;
+	int n=0;
+	a.addRoot();
+	a.addNode();
+	cout<<"\ninsert an element\n";
+	cin>>el;
+	n=a.count(el, a.getRoot(), n);
+	cout<<"elements are: "<<n;
 }
