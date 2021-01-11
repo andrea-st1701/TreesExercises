@@ -157,8 +157,7 @@ bool compareNode( node *n0, node *n1)
 	if(eq&&n0&&n1)
 	{
 		
-		eq=compareNode( n0->left, n1->left);
-		if(eq) eq=compareNode( n0->right, n1->right);
+		eq=compareNode( n0->left, n1->left)&& compareNode( n0->right, n1->right);
 		
 		cout<<endl<<n0->cont<<" "<<n1->cont<<endl;
 		if(n0->cont!=n1->cont)
@@ -170,18 +169,6 @@ bool compareNode( node *n0, node *n1)
 	{
 		return 0;
 	}
-	return eq;
-}
-bool compareTree(tree* t0, tree* t1)
-{
-	node* p;
-	node* t;
-	bool eq= true;
-	p=new node;
-	t=new node;
-	p=t0->getRoot();
-	t=t1->getRoot();
-	eq=compareNode( p, t);
 	return eq;
 }
 
@@ -220,7 +207,7 @@ int main()
 	
 	
 	cout<<"\ncomparing trees...\n";
-	eq=compareTree(Trees[comp1-1], Trees[comp2-1]);
+	eq=compareNode(Trees[comp1-1]->getRoot(), Trees[comp2-1]->getRoot());
 	if(eq)
 	{
 		cout<<"the selected trees are equal";
