@@ -163,9 +163,8 @@ int tree::count(char el, node* p, int &z)
 		z=count(el ,p->right, z);
 		if(el==p->cont)
 		{
-			z+1;
+			z++;
 		}
-		
 	}
 	return z;
 }
