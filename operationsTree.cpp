@@ -16,7 +16,7 @@ class tree
 	public:
 		tree();
 		void insertNode();
-		node* getRoot(){return root;	};
+		node* getRoot(){return root;};
 		float calculate(node* p);
 		void Pot(node* p);
 };
@@ -25,27 +25,51 @@ tree::tree()
 	root=NULL;
 	add="Root";
 }
+void shift(string &c)
+{
+	for(int i=0; i<c.length(); i++)
+	{
+		c[i]=c[i+1];
+	}
+	c.erase(c.size()-1);
+}
+int manageData(string &c)
+{
+	int a=0;
+	if(c[0]=='-'&&c.length()>1)
+	{
+		
+			shift(c);
+			a=-manageData(c);//value is -48 because of the change of sign
+	}
+	else
+	{
+		if(c.length()>1)
+			{
+				int sum=0;
+				for(int n=c.length()-1; n>-1; n--)
+				{
+					sum+=(c[n]-48)*pow(10,(c.length()-n-1));
+				}
+				a=sum+48;//N.B value is number +48 because of ascii table
+			}
+		else a=c[0];
+	}
+	return a;
+}
 void tree::insertNode()
 {
 	string c;
 	char  b;
+	int k;
 	bool end=false;
 	if(!root)
 	{	
 		cout<<"insert value for root\n";
 		cin>>c;
-		if(c.length()>1)
-		{
-			int sum=0;
-			for(int n=c.length()-1; n>-1; n--)
-			{
-				sum+=(c[n]-48)*pow(10,(c.length()-n-1));
-			}
-			c[0]=sum;
-		}
-		else c[0]-=48;
+		k=manageData(c);
 		root= new node;
-		root->cont=c[0]+48;
+		root->cont=k;
 	}
 	node* p=root;
 	while(!end)
@@ -95,20 +119,11 @@ void tree::insertNode()
 			{
 				cout<<"add left value for this node (nothing if null)\n";
 				cin>>c;
-				if(c.length()>1)
-				{
-					char sum=0;
-					for(int n=c.length()-1; n>-1; n--)
-					{
-						sum+=(c[n]-48)*pow(10,(c.length()-n-1));
-					}
-					c[0]=sum;
-				}
-				else c[0]-=48;
+				k=manageData(c);
 				if(!p->left)
 				{
 					p->left=new node;
-					p->left->cont=c[0]+48;
+					p->left->cont=k;
 					p->left->prec=p;
 				}
 				else
@@ -119,7 +134,7 @@ void tree::insertNode()
 						cin>>b;
 						if(b=='y')
 						{
-							p->left->cont=c[0];
+							p->left->cont=k;
 						}
 						if(b=='n')
 						{
@@ -130,21 +145,11 @@ void tree::insertNode()
 				}
 				cout<<"add right value for this node (nothing if null)\n";
 				cin>>c;
-				if(c.length()>1)
-				{
-					int sum=0;
-					for(int n=c.length()-1; n>-1; n--)
-					{
-						sum+=(c[n]-48)*pow(10,(c.length()-n-1));
-					}
-					c[0]=sum;
-
-				}
-				else c[0]-=48;
+				k=manageData(c);
 				if(!p->right)
 				{
 					p->right=new node;
-					p->right->cont=c[0]+48;
+					p->right->cont=k;
 					p->right->prec=p;
 				}
 				else
@@ -155,7 +160,7 @@ void tree::insertNode()
 						cin>>b;
 						if(b=='y')
 						{
-							p->right->cont=c[0];
+							p->right->cont=k;
 						}
 						if(b=='n')
 						{
@@ -172,23 +177,32 @@ float tree::calculate(node* p)
 
 	if(p)
 	{
-		switch(p->cont)
+		if(p->cont<0)
 		{
-			case '+':
-				return calculate(p->left)+calculate(p->right);
-				break;
-			case '-':
-				return calculate(p->left)-calculate(p->right);
-				break;
-			case '*':
-				return calculate(p->left)*calculate(p->right);
-				break;
-			case '/':
-				return calculate(p->left)/calculate(p->right);
-				break;
-			default:
-				return p->cont-48;//N.B. '0'=48 in ascii table;
-				break;
+			cout<<p->cont-48<<endl;
+			return p->cont+48;//see before
+		}
+		else 
+		{
+			cout<<p->cont<<endl;
+			switch(p->cont)
+			{
+				case '+':
+					return calculate(p->left)+calculate(p->right);
+					break;
+				case '-':
+					return calculate(p->left)-calculate(p->right);
+					break;
+				case '*':
+					return calculate(p->left)*calculate(p->right);
+					break;
+				case '/':
+					return calculate(p->left)/calculate(p->right);
+					break;
+				default:
+					return p->cont-48;//see before
+					break;
+			}
 		}
 		
 
